@@ -1,1 +1,0 @@
-# elektropolnilnice-app
