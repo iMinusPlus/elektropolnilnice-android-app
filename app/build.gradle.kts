@@ -48,6 +48,7 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation("com.mapbox.maps:android:11.9.0")
     implementation(libs.play.services.maps)
+    debugImplementation(libs.leakcanary.android)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
