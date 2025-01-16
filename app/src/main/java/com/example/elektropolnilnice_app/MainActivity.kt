@@ -1,7 +1,7 @@
 package com.example.elektropolnilnice_app
 
 import MapFragment
-import ProfileFragment
+import StationsFragment
 import RecordFragment
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
             when (menuItem.itemId) {
                 R.id.nav_map -> loadFragment(MapFragment())
                 R.id.nav_record -> loadFragment(RecordFragment())
-                R.id.nav_profile -> loadFragment(ProfileFragment())
+                R.id.nav_profile -> loadFragment(StationsFragment())
                 else -> false
             }
             true
