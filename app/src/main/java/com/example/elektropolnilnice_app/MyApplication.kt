@@ -10,7 +10,7 @@ import java.io.IOException
 
 class MyApplication : Application() {
 
-    private lateinit var allStations: MutableList<ChargingStation>
+    lateinit var allStations: MutableList<ChargingStation>
 
     override fun onCreate() {
         super.onCreate()

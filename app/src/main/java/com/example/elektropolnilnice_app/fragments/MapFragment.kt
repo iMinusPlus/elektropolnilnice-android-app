@@ -1,12 +1,18 @@
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.example.elektropolnilnice_app.MyApplication
 import com.example.elektropolnilnice_app.R
 import com.example.elektropolnilnice_app.databinding.FragmentMapBinding
+import com.mapbox.geojson.Point
 import com.mapbox.maps.MapView
 import com.mapbox.maps.Style
+import com.mapbox.maps.plugin.annotation.annotations
+import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
+import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
 
 class MapFragment : Fragment() {
 
@@ -28,11 +34,35 @@ class MapFragment : Fragment() {
 
         // Inicializiraj MapView
         mapView = binding.mapView
-        mapView.getMapboxMap().loadStyleUri(Style.MAPBOX_STREETS) {
-            // Dodatna logika, ko je slog zemljevida naložen
+        mapView.getMapboxMap().loadStyleUri(Style.MAPBOX_STREETS) { style ->
+            addMarkersToMap(style)
 
         }
     }
+
+    private fun addMarkersToMap(style: Style) {
+
+        val app = requireActivity().application as MyApplication
+        val allStations = app.allStations
+
+        style.addImage("marker-icon", BitmapFactory.decodeResource(resources, R.drawable.marker_logo))
+
+        val annotationApi = mapView.annotations
+        val pointAnnotationManager = annotationApi.createPointAnnotationManager()
+
+        allStations.forEach { station ->
+            val lat = station.latitude
+            val lon = station.longitude
+
+            val pointAnnotationOptions = PointAnnotationOptions()
+                .withPoint(Point.fromLngLat(lon, lat))
+                .withIconImage("marker-icon")
+                .withIconSize(0.15)
+
+            pointAnnotationManager.create(pointAnnotationOptions)
+        }
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
