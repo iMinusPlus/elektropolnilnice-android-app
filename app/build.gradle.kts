@@ -49,10 +49,7 @@ dependencies {
     implementation("androidx.fragment:fragment-ktx:1.6.2")
     implementation("androidx.fragment:fragment:1.6.2") // Use the latest version
     implementation("com.mapbox.maps:android:11.9.0")
-    implementation("io.realm:realm-android-sdk:10.17.0")
-    implementation("org.mongodb:bson:4.11.1")
-    implementation("org.mongodb:mongodb-driver-sync:4.11.1")
-    implementation("org.mongodb:realm-android-library:10.17.0")
+    implementation("com.squareup.okhttp3:okhttp:4.9.0")
     implementation(libs.play.services.maps)
     implementation(libs.androidx.camera.core)
     implementation(libs.androidx.camera.camera2)

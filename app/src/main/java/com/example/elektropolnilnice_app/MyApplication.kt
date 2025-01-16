@@ -1,64 +1,78 @@
 package com.example.elektropolnilnice_app
 
 import android.app.Application
-//import android.widget.Toast
-//import io.realm.Realm
-//import io.realm.RealmConfiguration
-//import io.realm.mongodb.App
-//import io.realm.mongodb.AppConfiguration
-//import io.realm.mongodb.mongo.MongoCollection
-//import io.realm.mongodb.mongo.iterable.MongoCursor
-//import org.bson.Document
+import android.util.Log
+import com.example.elektropolnilnice_app.models.ChargingStation
+import com.google.gson.Gson
+import com.mapbox.maps.extension.style.expressions.dsl.generated.all
+import okhttp3.*
+import java.io.IOException
 
 class MyApplication : Application() {
 
-//    private lateinit var mongoApp: App
-//    private lateinit var collection: MongoCollection<Document>
+    private lateinit var allStations: MutableList<ChargingStation>
 
     override fun onCreate() {
         super.onCreate()
 
-//        Realm.init(this)
-//
-//        val appID = "your-app-id" // Zamenjaj z MongoDB App ID
-//        mongoApp = App(AppConfiguration.Builder(appID).build())
-//
-//        // Prijavi se v MongoDB Realm (anonimno)
-//        mongoApp.loginAsync(AppCredentials.anonymous()) { result ->
-//            if (result.isSuccess) {
-//                Toast.makeText(this, "Prijava uspešna!", Toast.LENGTH_SHORT).show()
-//                setupMongoDB()
-//            } else {
-//                Toast.makeText(this, "Napaka pri prijavi: ${result.error.message}", Toast.LENGTH_LONG).show()
-//            }
-//        }
+        allStations = mutableListOf()
+
+        getChargingStations()
 
     }
 
-//    private fun setupMongoDB() {
-//        // Pridobi MongoDB klienta in zbirko
-//        val mongoClient = mongoApp.currentUser()?.getMongoClient("mongodb-atlas")
-//        val database = mongoClient?.getDatabase("your-database-name") // Zamenjaj z imenom baze podatkov
-//        collection = database?.getCollection("your-collection-name")!! // Zamenjaj z imenom zbirke
-//
-//        // Pridobi podatke iz zbirke
-//        fetchData()
-//    }
-//
-//    private fun fetchData() {
-//        val query = Document() // Prazen dokument pomeni, da pridobimo vse
-//        collection.find(query).iterator().getAsync { result ->
-//            if (result.isSuccess) {
-//                val cursor: MongoCursor<Document>? = result.get()
-//                while (cursor?.hasNext() == true) {
-//                    val document = cursor.next()
-//                    // Naredi nekaj s pridobljenim dokumentom
-//                    Toast.makeText(this, "Podatek: ${document.toJson()}", Toast.LENGTH_LONG).show()
-//                }
-//            } else {
-//                Toast.makeText(this, "Napaka pri pridobivanju podatkov: ${result.error.message}", Toast.LENGTH_LONG).show()
-//            }
-//        }
-//    }
+    fun getChargingStations() {
+        val client = OkHttpClient()
+
+        val request = Request.Builder()
+            .url("http://elektropolnilnice.eu:3000/address")
+            .get()
+            .build()
+
+        // poslji zahtevo
+        client.newCall(request).enqueue(object : Callback {
+            override fun onResponse(call: Call, response: Response) {
+                if (response.isSuccessful) {
+                    val body = response.body?.string()
+                    parseChargingStationsData(body)
+                } else {
+                    handleError(response)
+                }
+            }
+
+            override fun onFailure(call: Call, e: IOException) {
+                e.printStackTrace()
+                Log.d("MyApplication", "Error: ${e.message}")
+            }
+        })
+    }
+
+    fun parseChargingStationsData(data: String?) {
+        if (data != null) {
+            val gson = Gson()
+            try {
+                val chargingStations = gson.fromJson(data, Array<ChargingStation>::class.java)
+
+                allStations.clear()
+                allStations.addAll(chargingStations)
+
+                 displayChargingStations(allStations)
+
+            } catch (e: Exception) {
+                Log.e("MyApplication", "Napaka pri parsiranju podatkov: ${e.message}")
+            }
+        }
+    }
+
+
+    fun handleError(response: Response) {
+        println("Error: ${response.message}")
+    }
+
+    fun displayChargingStations(chargingStations: List<ChargingStation>) {
+        for (station in chargingStations) {
+            Log.d("MyApplication", "Polnilnica: ${station.title}, ${station.country}")
+        }
+    }
 
 }
