@@ -1,7 +1,6 @@
 package com.example.elektropolnilnice_app
 
 import MapFragment
-import StationsFragment
 import RecordFragment
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

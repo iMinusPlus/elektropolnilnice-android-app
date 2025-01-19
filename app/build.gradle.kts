@@ -57,6 +57,7 @@ dependencies {
     implementation(libs.androidx.camera.viewfinder)
     implementation(libs.androidx.camera.extensions)
     implementation(libs.androidx.camera.view)
+    implementation(libs.play.services.location)
     debugImplementation(libs.leakcanary.android)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

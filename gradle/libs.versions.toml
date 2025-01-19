@@ -23,6 +23,7 @@ pytorch_android_lite = "2.1.0"
 jetbrainsKotlinJvm = "1.9.24"
 pytorch_android_torchvision = "2.1.0"
 pytorch_android_torchvisionVersion = "1.9.0"
+playServicesLocation = "21.3.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -46,6 +47,7 @@ pytorch_android = { module = "org.pytorch:pytorch_android", version = "1.10.0" }
 pytorch_android_lite = { group = "org.pytorch", name = "pytorch_android_lite", version.ref = "pytorch_android_lite" }
 pytorch_android_torchvision = { group = "org.pytorch", name = "pytorch_android_torchvision", version.ref = "pytorch_android_torchvision" }
 pytorch_android_torchvision-v190 = { module = "org.pytorch:pytorch_android_torchvision", version = "1.10.0" }
+play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
