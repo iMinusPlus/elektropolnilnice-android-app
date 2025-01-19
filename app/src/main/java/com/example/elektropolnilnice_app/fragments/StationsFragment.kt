@@ -80,7 +80,7 @@ class StationsFragment : Fragment() {
             location.distanceTo(stationLocation) // Calculate distance in meters
         }
 
-        val adapter = ChargingStationAdapter(sortedStations) { station ->
+        val adapter = ChargingStationAdapter(sortedStations, location) { station ->
             showStationOnMap(station)
         }
 
